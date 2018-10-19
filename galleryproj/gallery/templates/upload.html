@@ -5,7 +5,7 @@
     
     <input type="file" id="file-input" accept="image/*">
     <div>
-        <img style="border:1px solid gray;width:300px;" id="preview" src="/static/media/default.png">
+        <img style="border:1px solid gray;height:200px;width:300px;" id="preview" src="/static/media/default.png">
     </div>
     <form method="POST" action="/submit-form/">
       {% csrf_token %}
@@ -18,7 +18,7 @@
     <h2>Your Uploaded Photos</h2>
     {% for p in photos %}
       <div>
-        <div><img style="border:1px solid gray;width:300px;" id="{{p.s3url}}" src="{{p.s3url}}"></div>
+        <div><img style="border:1px solid gray;height:200px;width:300px;" id="{{p.s3url}}" src="{{p.s3url}}"></div>
         <span>{{p.label}}</span>
       </div>
     {% endfor %}
