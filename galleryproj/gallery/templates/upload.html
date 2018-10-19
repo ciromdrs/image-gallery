@@ -1,18 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
+    <p id="status">Please select a photo below</p>
+    
     <input type="file" id="file-input" accept="image/*">
-    <p id="status">Please select a file</p>
-    <img style="border:1px solid gray;width:300px;" id="preview" src="/static/media/default.png">
-
-    <h2>Other information</h2>
-
+    <div>
+        <img style="border:1px solid gray;width:300px;" id="preview" src="/static/media/default.png">
+    </div>
     <form method="POST" action="/submit-form/">
       {% csrf_token %}
       <input type="hidden" id="img-url" name="img-url" value="">
-      <input type="text" name="username" placeholder="Username"><br>
-      <input type="text" name="full-name" placeholder="Full name"><br><br>
+      <input type="text" name="label" placeholder="Write a label for this photo"><br>
 
-      <input type="submit" value="Update profile">
+      <input type="submit" value="Upload photo">
     </form>
 {% endblock %}
 
