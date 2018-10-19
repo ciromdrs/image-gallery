@@ -1,6 +1,6 @@
-<html>
-  <body>
-    <input type="file" id="file-input">
+{% extends 'base.html' %}
+{% block content %}
+    <input type="file" id="file-input" accept="image/*">
     <p id="status">Please select a file</p>
     <img style="border:1px solid gray;width:300px;" id="preview" src="/static/media/default.png">
 
@@ -14,8 +14,9 @@
 
       <input type="submit" value="Update profile">
     </form>
+{% endblock %}
 
-
+{% block body_end_scripts %}
     <script type="text/javascript">
 
     /*
@@ -89,5 +90,4 @@
     })();
 
     </script>
-  </body>
-</html>
+{% endblock %} 
