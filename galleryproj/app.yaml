@@ -1,6 +1,0 @@
-runtime: python
-env: flex
-entrypoint: env BUCKET='image-gallery-bucket' AWS_ACCESS_KEY_ID='AKIAIJNR6IRPIA62A5MQ' AWS_SECRET_ACCESS_KEY='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' gunicorn -b :$PORT galleryproj.wsgi
-
-runtime_config:
-  python_version: 3
