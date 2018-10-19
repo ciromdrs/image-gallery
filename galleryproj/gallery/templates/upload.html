@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+    <h2>Upload</h2>
     <p id="status">Please select a photo below</p>
     
     <input type="file" id="file-input" accept="image/*">
@@ -13,6 +14,14 @@
 
       <input type="submit" value="Upload photo">
     </form>
+
+    <h2>Your Uploaded Photos</h2>
+    {% for p in photos %}
+      <div>
+        <div><img style="border:1px solid gray;width:300px;" id="{{p.s3url}}" src="{{p.s3url}}"></div>
+        <span>{{p.label}}</span>
+      </div>
+    {% endfor %}
 {% endblock %}
 
 {% block body_end_scripts %}
