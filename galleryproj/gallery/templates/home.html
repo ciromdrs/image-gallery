@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
     <a href={% url 'upload' %}>Upload</a> |
+    {% if user.is_authenticated %}
+    Hi,{{user}}. You can <a href={%url 'logout'%}>logout</a>
+    {% else %}
     <a href={% url 'signup' %}>Sign-up</a> |
-    <a href= url 'login' >Login</a>
+    <a href={%url 'login'%}>Login</a>
+    {% endif %}
     
 {% endblock %}
