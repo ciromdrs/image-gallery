@@ -21,6 +21,10 @@ class Like(models.Model):
         on_delete=models.CASCADE, default=None)
     user = models.ForeignKey(get_user_model(),
         on_delete=models.CASCADE, default=None)
+        
     def __str__(self):
         return str(self.photo.id)+":"+self.user.username
+
+    class Meta:
+        unique_together = ('user', 'photo',)
     

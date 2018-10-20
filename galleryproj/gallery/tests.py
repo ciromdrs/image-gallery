@@ -1,4 +1,7 @@
-from django.test import TestCase
+from django.test import TestCase, Client, SimpleTestCase
+from django.test.utils import setup_test_environment
+from django.urls import reverse
+from django.db.utils import IntegrityError
 
 import json
 
@@ -7,16 +10,20 @@ from . import s3lib
 from .models import Photo, Like
 from django.contrib.auth import get_user_model
 
-User = get_user_model()
+client = Client() # Used to test views
+
+User = get_user_model() # Avoid importing User model directly
 
 class GalleryTestCase(TestCase):
     def setUp(self):
         self.alice = User.objects.create_user('alice',
             'alice@example.com', 'password')
-
-    def tearDown(self):
-        User.objects.all().delete()
-        Photo.objects.all().delete()
+        self.bob = User.objects.create_user('bob',
+            'bob@example.com', 'password')
+        self.claire = User.objects.create_user('claire',
+            'claire@example.com', 'password')
+        self.david = User.objects.create_user('david',
+            'david@example.com', 'password')
 
 class PhotoTests(GalleryTestCase):
     def test_save_get_photo(self):
@@ -24,7 +31,8 @@ class PhotoTests(GalleryTestCase):
         label = 'this is the photo label'
         s3url = 'example.com'
         
-        created = Photo.objects.create(owner=self.alice,label=label, s3url=s3url)
+        created = Photo.objects.create(owner=self.alice,label=label,
+            s3url=s3url)
         
         photo = Photo.objects.get(id=created.id)
 
@@ -32,17 +40,47 @@ class PhotoTests(GalleryTestCase):
         self.assertEqual(label,photo.label)
         self.assertEqual(s3url,photo.s3url)
 
-    def test_like_photo(self):
-        '''Like a photo'''
+    def test_like_photo_twice(self):
+        '''Like a photo twice.'''
+        label = 'photo to be liked'
+        s3url = 'example.com'
         
+        photo = Photo.objects.create(owner=self.alice,label=label,
+            s3url=s3url)
 
-class S3Tests(GalleryTestCase):
+        Like(user=self.alice,photo=photo).save()
+        try:
+            Like(user=self.alice,photo=photo).save()
+            added_twice=True
+        except IntegrityError:
+            added_twice=False
+        self.assertEquals(added_twice, False)
+
+    def test_random_string(self):
+        '''Random string generation.'''
+        s1 = s3lib.generate_id()
+        s2 = s3lib.generate_id()
+        
+        self.assertEquals(len(s1),20)
+        self.assertEquals(len(s2),20)
+        self.assertNotEquals(s1,s2)
+
     def test_sign(self):
-        '''AWS S3 signature'''
+        '''AWS S3 signature.'''
         signature_str = s3lib.sign('hello','text')
         self.assertIs(type(signature_str)==str, True)
         
         signature = json.loads(signature_str)
-        self.assertIs(type(signature)==type(dict()), True)
-        self.assertIs(type(signature['url'])==type(''), True)
-        self.assertIs(type(signature['data'])==type(dict()), True)
+        self.assertEquals(type(signature),type(dict()))
+        self.assertEquals(type(signature['url']),type(''))
+        self.assertEquals(type(signature['data']),type(dict()))
+    
+
+class HomeViewTests(TestCase):
+    def test_home_view(self):
+        '''Serve home page.'''
+        #TODO: test if logged in, redirect to see photos page.
+        response = client.get(reverse('home'), follow=False)
+        self.assertEqual(response.status_code, 200)
+    
+
