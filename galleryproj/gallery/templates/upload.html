@@ -7,7 +7,7 @@
     <div>
         <img style="border:1px solid gray;height:200px;width:300px;" id="preview" src="/static/media/default.png">
     </div>
-    <form method="POST" action="/submit-form/">
+    <form method="POST" action="{% url 'submit' %}">
       {% csrf_token %}
       <input type="hidden" id="img-url" name="img-url" value="">
       <input type="text" name="label" placeholder="Write a label for this photo"><br>

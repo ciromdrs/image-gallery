@@ -34,7 +34,7 @@ def submit_form(request):
     
     Photo(owner=request.user, label=label,s3url=s3url).save()
 
-    return redirect('home')
+    return redirect('upload')
 
 @login_required
 def upload(request):
