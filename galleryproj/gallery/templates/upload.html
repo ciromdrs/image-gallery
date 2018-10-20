@@ -5,9 +5,9 @@
     
     <input type="file" id="file-input" accept="image/*">
     <div>
-        <img style="border:1px solid gray;height:200px;width:300px;" id="preview" src="/static/media/default.png">
+        <img style="border:1px solid gray;height:200px;width:300px;display: none;" id="preview">
     </div>
-    <form method="POST" action="{% url 'submit' %}">
+    <form id='upload-form' method="POST" action="{% url 'submit' %}">
       {% csrf_token %}
       <input type="hidden" id="img-url" name="img-url" value="">
       <input type="text" name="label" placeholder="Write a label for this photo"><br>
@@ -45,6 +45,7 @@
         if(xhr.readyState === 4){
           if(xhr.status === 200 || xhr.status === 204){
             document.getElementById('preview').src = url;
+            document.getElementById('preview').style.display = "block";
             document.getElementById('img-url').value = url;
           }
           else{
