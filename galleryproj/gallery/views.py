@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required
+from django.db.models import Count
 
 from . import s3lib
 from .models import Photo, Like
@@ -13,14 +14,19 @@ def home(request):
 
 @login_required
 def see_photos(request):
-    photos = Photo.objects.all().filter(approved=True).order_by('-upload_date')
+    sort = request.GET.get('sort','date')
+    if sort == 'date':
+        photos = Photo.objects.all().filter(approved=True).order_by('-upload_date')
+    else:
+        photos = Photo.objects.all().filter(approved=True).annotate(num_likes=Count('like')).order_by('-num_likes')
     for p in photos:
         p.liked = False
         for l in p.like_set.all():
             if request.user == l.user:
                 p.liked = True
                 break
-    return render(request, 'see_photos.html', {'photos':photos})
+    context = {'photos':photos, 'sort':sort}
+    return render(request, 'see_photos.html', context)
 
 @login_required
 def sign_s3(request):
@@ -50,7 +56,10 @@ def like(request):
             user=request.user
         )
         l.save()
-    return redirect('see-photos')
+    # Redirect back, but preserve sorting
+    response = redirect('see-photos')
+    response['Location'] += '?sort='+request.GET['sort']
+    return response
 
 @login_required
 def dislike(request):
@@ -59,7 +68,10 @@ def dislike(request):
             user=request.user
         )
         l.delete()
-    return redirect('see-photos')
+    # Redirect back, but preserve sorting
+    response = redirect('see-photos')
+    response['Location'] += '?sort='+request.GET['sort']
+    return response
 
 @permission_required('gallery.approve_photo')
 def approve(request):

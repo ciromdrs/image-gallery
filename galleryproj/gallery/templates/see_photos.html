@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Photo Gallery App</h1>
-    {% if user.is_authenticated %}
+    <h1>All photos</h1>
+
+    Sort by
+    <a href='?sort=likes' {% if sort == 'like' %}disabled{% endif %}>most liked</a> |
+    <a href='?sort=date' {% if sort == 'date' %}disabled{% endif %}>most recent</a>
     
     {% for p in photos %}
       <form>
@@ -16,10 +19,9 @@
           formaction={% url 'like' %}
           {% endif %}>
         <span>{{p.like_set.count}}</span>
+        <input type='hidden' name='sort' value='{{sort}}'>
         <input type='hidden' name='photo-id' value='{{p.id}}'>
       </form>
     {% endfor %}
-    
-    {% endif %}
     
 {% endblock %}
