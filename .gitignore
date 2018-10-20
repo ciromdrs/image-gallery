@@ -56,3 +56,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+galleryproj/db\.sqlite3
+
+galleryproj/app\.yaml
