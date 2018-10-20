@@ -16,6 +16,8 @@ User = get_user_model() # Avoid importing User model directly
 
 class GalleryTestCase(TestCase):
     def setUp(self):
+        '''Create useful data for tests'''
+        #System users
         self.alice = User.objects.create_user('alice',
             'alice@example.com', 'password')
         self.bob = User.objects.create_user('bob',
@@ -76,11 +78,20 @@ class PhotoTests(GalleryTestCase):
         self.assertEquals(type(signature['data']),type(dict()))
     
 
-class HomeViewTests(TestCase):
+class HomeViewTests(GalleryTestCase):
     def test_home_view(self):
         '''Serve home page.'''
         #TODO: test if logged in, redirect to see photos page.
         response = client.get(reverse('home'), follow=False)
         self.assertEqual(response.status_code, 200)
+
+class SubmitPhotoViewTests(GalleryTestCase):
+    def test_submit_photo(self):
+        client.login(username=self.alice.username,password='password')
+        response = client.post(reverse('submit'),{"label":'test photo',
+            "img-url":'example.com/testphoto'})
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.url.split('?')[0], reverse('upload'))
     
+
 
