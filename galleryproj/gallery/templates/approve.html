@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Photo Gallery App</h1>
+    
+    {% for p in photos %}
+      <form method='POST'>
+        {% csrf_token %}
+        <div><img style="border:1px solid gray;height:200px;width:300px;" id="{{p.s3url}}" src="{{p.s3url}}"></div>
+        <p>{{p.label}}</p>
+        <input type='submit'
+          {% if not p.approved %} 
+          value='Approve'
+          formaction={% url 'approve' %}
+          {% endif %}>
+        <input type='hidden' name='photo-id' value='{{p.id}}'>
+      </form>
+    {% endfor %}
+    
+{% endblock %}

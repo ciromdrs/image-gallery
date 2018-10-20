@@ -9,4 +9,6 @@ urlpatterns = [
     path('upload/', views.upload, name='upload'),
     path('like/', views.like, name='like'),
     path('dislike/', views.dislike, name='dislike'),
+    path('approve/', views.approve, name='approve'),
 ]
+
