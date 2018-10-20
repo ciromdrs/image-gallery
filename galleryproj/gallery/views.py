@@ -17,8 +17,8 @@ def sign_s3(request):
 def submit_form(request):
     label = request.POST["label"]
     s3url = request.POST["img-url"]
- 
-    Photo(label=label,s3url=s3url).save()
+    
+    Photo(owner=request.user, label=label,s3url=s3url).save()
 
     return HttpResponseRedirect(reverse('home'))#, args=(question.id,)))
 
