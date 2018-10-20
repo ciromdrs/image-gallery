@@ -37,7 +37,7 @@ Install project's requirements:
 python -m pip install -r image-gallery/galleryproj/requirements.txt
 
 
-(There is a default database included, so this command is optional) Django migrate database:
+Django migrate database:
 
 python image-gallery/galleryproj/manage.py migrate
 
