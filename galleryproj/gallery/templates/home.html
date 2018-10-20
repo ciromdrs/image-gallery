@@ -2,12 +2,24 @@
 {% block content %}
     <h1>Photo Gallery App</h1>
     {% if user.is_authenticated %}
-    <div>Hi,{{user}}.</div>
-    <div><a href={%url 'upload'%}>Upload photos</a> |
-    <a href={%url 'logout'%}>Logout</a></div>
-    {% else %}
-    <a href={% url 'signup' %}>Sign-up</a> |
-    <a href={%url 'login'%}>Login</a>
+    
+    {% for p in photos %}
+      <form>
+        <div><img style="border:1px solid gray;height:200px;width:300px;" id="{{p.s3url}}" src="{{p.s3url}}"></div>
+        <p>{{p.label}}</p>
+        <input type='submit'
+          {% if p.liked %} 
+          value='Dislike'
+          formaction={% url 'dislike' %}
+          {% else %}
+          value='Like'
+          formaction={% url 'like' %}
+          {% endif %}>
+        <span>{{p.like_set.count}}</span>
+        <input type='hidden' name='photo-id' value='{{p.id}}'>
+      </form>
+    {% endfor %}
+    
     {% endif %}
     
 {% endblock %}

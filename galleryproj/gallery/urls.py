@@ -7,4 +7,6 @@ urlpatterns = [
     path('sign-s3/', views.sign_s3, name='sign-s3'),
     path('submit-form/', views.submit_form, name='submit'),
     path('upload/', views.upload, name='upload'),
+    path('like/', views.like, name='like'),
+    path('dislike/', views.dislike, name='dislike'),
 ]

@@ -3,6 +3,15 @@
     <title>{% block title %}Photo Gallery{% endblock %}{% block subtitle %}{% endblock %}</title>
   </head>
   <body>
+    {% if user.is_authenticated %}
+    <div>Hi,{{user}}.</div>
+    <div><a href={%url 'upload'%}>Upload photos</a> |
+    <a href={%url 'logout'%}>Logout</a></div>
+    {% else %}
+    <a href={% url 'signup' %}>Sign-up</a> |
+    <a href={%url 'login'%}>Login</a>
+    {% endif %}
+    
     {% block content %}
     {% endblock %}
 
