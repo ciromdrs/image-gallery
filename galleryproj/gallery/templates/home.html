@@ -1,25 +1,9 @@
 {% extends 'base.html' %}
+{% block actions %}
+{% endblock %}
+
 {% block content %}
-    <h1>Photo Gallery App</h1>
-    {% if user.is_authenticated %}
-    
-    {% for p in photos %}
-      <form>
-        <div><img style="border:1px solid gray;height:200px;width:300px;" id="{{p.s3url}}" src="{{p.s3url}}"></div>
-        <p>{{p.label}}</p>
-        <input type='submit'
-          {% if p.liked %} 
-          value='Dislike'
-          formaction={% url 'dislike' %}
-          {% else %}
-          value='Like'
-          formaction={% url 'like' %}
-          {% endif %}>
-        <span>{{p.like_set.count}}</span>
-        <input type='hidden' name='photo-id' value='{{p.id}}'>
-      </form>
-    {% endfor %}
-    
-    {% endif %}
+    <h1>Collaborative Photo Gallery</h1>
+    <p>This is a collaborative photo gallery. <a href={% url 'signup' %}>Sign up</a> or <a href={% url 'login' %}>log in</a> to get started.</p>
     
 {% endblock %}

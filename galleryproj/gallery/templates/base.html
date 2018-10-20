@@ -3,11 +3,12 @@
     <title>{% block title %}Photo Gallery{% endblock %}{% block subtitle %}{% endblock %}</title>
   </head>
   <body>
+    {% block actions %}
     <div>
     {% if user.is_authenticated %}
     Hi,{{user}}.</div>
     <div>
-    <a href={%url 'home'%}>Home</a> |
+    <a href={%url 'see-photos'%}>See Photos</a> |
     <a href={%url 'upload'%}>Upload photos</a> |
     {% if perms.gallery.approve_photo %}<a href={%url 'approve'%}>Approve photos</a> | {% endif %}
     <a href={%url 'logout'%}>Logout</a>
@@ -16,6 +17,7 @@
     <a href={%url 'login'%}>Login</a>
     {% endif %}
     </div>
+    {% endblock %}
     
     {% block content %}
     {% endblock %}

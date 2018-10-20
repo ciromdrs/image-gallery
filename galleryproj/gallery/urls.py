@@ -10,5 +10,6 @@ urlpatterns = [
     path('like/', views.like, name='like'),
     path('dislike/', views.dislike, name='dislike'),
     path('approve/', views.approve, name='approve'),
+    path('see-photos/', views.see_photos, name='see-photos'),
 ]
 

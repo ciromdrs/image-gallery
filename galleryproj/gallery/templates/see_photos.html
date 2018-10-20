@@ -1,15 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>Photo Gallery App</h1>
+    {% if user.is_authenticated %}
     
     {% for p in photos %}
-      <form method='POST'>
-        {% csrf_token %}
+      <form>
         <div><img style="border:1px solid gray;height:200px;width:300px;" id="{{p.s3url}}" src="{{p.s3url}}"></div>
         <p>{{p.label}}</p>
-        <input type='submit' value='Approve' formaction={% url 'approve' %}>
+        <input type='submit'
+          {% if p.liked %} 
+          value='Dislike'
+          formaction={% url 'dislike' %}
+          {% else %}
+          value='Like'
+          formaction={% url 'like' %}
+          {% endif %}>
+        <span>{{p.like_set.count}}</span>
         <input type='hidden' name='photo-id' value='{{p.id}}'>
       </form>
     {% endfor %}
+    
+    {% endif %}
     
 {% endblock %}
