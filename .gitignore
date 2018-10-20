@@ -58,3 +58,5 @@ docs/_build/
 target/
 
 galleryproj/app\.yaml
+
+galleryproj/db\.sqlite3
