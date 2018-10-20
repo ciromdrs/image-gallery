@@ -5,17 +5,40 @@ import json
 from . import s3lib
 
 from .models import Photo, Like
+from django.contrib.auth import get_user_model
 
-class LikeModelTests(TestCase):
-    def test_something(self):
-        self.assertIs(True, True)
+User = get_user_model()
 
-class PhotoModelTests(TestCase):
-    def test_something(self):
-        self.assertIs(True, True)
+class GalleryTestCase(TestCase):
+    def setUp(self):
+        self.alice = User.objects.create_user('alice',
+            'alice@example.com', 'password')
 
-class S3Tests(TestCase):
+    def tearDown(self):
+        User.objects.all().delete()
+        Photo.objects.all().delete()
+
+class PhotoTests(GalleryTestCase):
+    def test_save_get_photo(self):
+        '''Save and get a Photo'''
+        label = 'this is the photo label'
+        s3url = 'example.com'
+        
+        created = Photo.objects.create(owner=self.alice,label=label, s3url=s3url)
+        
+        photo = Photo.objects.get(id=created.id)
+
+        self.assertEqual(self.alice,photo.owner)
+        self.assertEqual(label,photo.label)
+        self.assertEqual(s3url,photo.s3url)
+
+    def test_like_photo(self):
+        '''Like a photo'''
+        
+
+class S3Tests(GalleryTestCase):
     def test_sign(self):
+        '''AWS S3 signature'''
         signature_str = s3lib.sign('hello','text')
         self.assertIs(type(signature_str)==str, True)
         

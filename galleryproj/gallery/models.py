@@ -11,7 +11,7 @@ class Photo(models.Model):
     def __str__(self):
         return self.label+":"+self.s3url
 
-    class Meta:
+    class Meta: #TODO: remove this
         permissions = (
             ('approve_photo', 'Can approve a photo for publication'),
         )
