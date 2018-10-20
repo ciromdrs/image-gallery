@@ -34,6 +34,9 @@ python image-gallery/galleryproj/manage.py makemigrations
 
 python image-gallery/galleryproj/manage.py migrate
 
+*Create admin user
+python image-gallery/galleryproj/manage.py createsuperuser
+
 Run Django application with environment variables:
 
 env BUCKET='your-bucket' AWS_ACCESS_KEY_ID='your-key' AWS_SECRET_ACCESS_KEY='your-secret' python image-gallery/galleryproj/manage.py runserver
