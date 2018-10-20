@@ -52,11 +52,14 @@ Done! Access your server at localhost:8000
 
 How to deploy to Google App Engine flexible environment
 --
-Fill in the app.yaml configurations with your data and run gcloud app deploy.
-
+Fill in the app.yaml configurations with your data.
 You might also need to allow the App Engine host in Django's ALLOWED_HOSTS in the galleryproj/settings.py file.
+
+gcloud app deploy
+
+
 
 
 How to run tests
 --
-python image-gallery/galleryproj/manage.py test
+env BUCKET='your-bucket' AWS_ACCESS_KEY_ID='your-key' AWS_SECRET_ACCESS_KEY='your-secret' python image-gallery/galleryproj/manage.py test
