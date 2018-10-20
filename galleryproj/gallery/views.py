@@ -7,6 +7,8 @@ from . import s3lib
 from .models import Photo, Like
 
 def home(request):
+    if request.user.is_authenticated:
+        return redirect('see-photos')
     return render(request, 'home.html')
 
 @login_required
