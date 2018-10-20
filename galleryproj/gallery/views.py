@@ -15,8 +15,6 @@ def home(request):
             if request.user == l.user:
                 p.liked = True
                 break
-    print(request.user.has_perm('gallery.approve_photo'))
-    print(request.user.get_group_permissions())
     return render(request, 'home.html', {'photos':photos})
 
 def sign_s3(request):
