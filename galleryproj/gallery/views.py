@@ -23,5 +23,5 @@ def submit_form(request):
     return HttpResponseRedirect(reverse('home'))#, args=(question.id,)))
 
 def upload(request):
-    photos = Photo.objects.all() # TODO: filter photos by user
+    photos = Photo.objects.all().filter(owner=request.user).order_by('-upload_date')
     return render(request, 'upload.html', {'photos':photos})
