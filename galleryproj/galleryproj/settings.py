@@ -26,8 +26,7 @@ SECRET_KEY = '@od16%evo%)j8p023f@n+^^joioq(uaic!4*i#*ei$xbe+=^#e'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost',
-    'image-gallery-219912.appspot.com',
+    '*',
 ]
 
 
