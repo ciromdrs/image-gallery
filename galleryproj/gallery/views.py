@@ -41,5 +41,8 @@ def like(request):
     return redirect('home')
 
 def dislike(request):
-    pass
+    l = Like.objects.get(photo=Photo.objects.get(id=request.GET['photo-id']),
+        user=request.user
+    )
+    l.delete()
     return redirect('home')
